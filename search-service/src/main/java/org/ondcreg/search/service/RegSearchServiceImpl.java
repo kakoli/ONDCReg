@@ -16,7 +16,7 @@ public class RegSearchServiceImpl implements RegSearchService {
     @Autowired
     private NPRepository npRepo;
 
-    public Optional<NetworkParticipant> getNP(String id){
+    public Optional<NetworkParticipant> getNP(Integer id){
         Optional<NetworkParticipant> np = null;
         np = npRepo.findById(id);
         if(np.isPresent()) {
@@ -27,7 +27,7 @@ public class RegSearchServiceImpl implements RegSearchService {
         return np;
     }
 
-    public List<NetworkParticipant> getNPByDomain(String domainId){
+    public List<NetworkParticipant> getNPByDomain(Integer domainId){
         List<NetworkParticipant> npList = null;
         npList = npRepo.findNPByDomain(domainId);
         return npList;

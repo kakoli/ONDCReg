@@ -18,10 +18,10 @@ import java.time.OffsetDateTime;
 @Table(name = "domain")
 public class Domain {
     @Id
-    @Column(name = "id", nullable = false, length = 36)
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    //@GeneratedValue(strategy= GenerationType.IDENTITY)
     @JsonIgnore
-    private String id;
+    private Integer id;
 
     @Column(name = "api_version")
     private Integer apiVersion;

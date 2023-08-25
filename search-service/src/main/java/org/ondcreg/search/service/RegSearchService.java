@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface RegSearchService {
 
-    public Optional<NetworkParticipant> getNP(String id);
+    public Optional<NetworkParticipant> getNP(Integer id);
 
-    public List<NetworkParticipant> getNPByDomain(String domainId);
+    public List<NetworkParticipant> getNPByDomain(Integer domainId);
 }

@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @Table(name = "seller_on_record")
 public class SellerOnRecord {
     @Id
-    @Column(name = "id", nullable = false, length = 36)
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+   // @GeneratedValue(strategy= GenerationType.IDENTITY)
     @JsonIgnore
-    private String id;
+    private Integer id;
 
     @Column(name = "api_version")
     private Integer apiVersion;

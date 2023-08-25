@@ -32,7 +32,7 @@ public class RegSearchController {
         return "Hello World";
     }
 
-    @GetMapping("/product/{prodId}")
+    @GetMapping("/product/{prodId}") // To be used in test_db
     public ResponseEntity<Product> getProduct(@PathVariable("prodId") Integer prodId) {
         log.info("Start getProduct : "+ prodId);
         Product getResponse = null;
@@ -53,8 +53,8 @@ public class RegSearchController {
         return ret;
     }
 
-    @GetMapping("/np/{npId}")
-    public ResponseEntity<NetworkParticipant> getNP(@PathVariable("npId") String npId) {
+    @GetMapping("/np/{npId}")   // To be used in ondc_registry
+    public ResponseEntity<NetworkParticipant> getNP(@PathVariable("npId") Integer npId) {
         log.info("Start getNP : " + npId);
         Optional<NetworkParticipant> np;
         ResponseEntity<NetworkParticipant> response = null;
@@ -89,9 +89,28 @@ public class RegSearchController {
         return response;
     }
 
+    @GetMapping(path="/np/cnt", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> getNPCntByDomain(@RequestParam(value="domain",
+                                                            required=true) Integer  domainId) {
+        log.info("Start getNPByDomain : " + domainId);
+        ResponseEntity<Integer> response = null;
+        long ts = System.currentTimeMillis();
+
+        List<NetworkParticipant> npList = searchService.getNPByDomain(domainId);
+        if(npList != null ) {
+            log.info("NP info " +npList.size());
+            response = new ResponseEntity<>(npList.size(), HttpStatus.OK);
+        }
+        else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        log.info("Time taken " +(System.currentTimeMillis() - ts));
+        return response;
+    }
+
     @GetMapping(path="/np", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NetworkParticipant>> getNPByDomain(@RequestParam(value="domain",
-                                                            required=true) String  domainId) {
+            required=true) Integer  domainId) {
         log.info("Start getNPByDomain : " + domainId);
         ResponseEntity<List<NetworkParticipant>> response = null;
         List<NetworkParticipant> npList = null;
