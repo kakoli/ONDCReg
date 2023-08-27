@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -74,4 +76,8 @@ public class NetworkParticipant {
     @JoinColumn(name = "entity_id")
     @JsonIgnore
     private EntityMaster entity;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name="network_participant_id")
+    private List<SellerOnRecord> sellerList = new ArrayList<>();
 }

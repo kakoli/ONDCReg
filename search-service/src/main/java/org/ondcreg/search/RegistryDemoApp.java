@@ -14,6 +14,6 @@ public class RegistryDemoApp extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(RegistryDemoApp.class, args);
-        System.out.println("Started Springboot Server for ONDC Registry Demo");
+        System.out.println("Started new Springboot Server for ONDC Registry Demo");
     }
 }

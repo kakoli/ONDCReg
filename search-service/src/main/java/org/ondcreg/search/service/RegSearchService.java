@@ -10,4 +10,6 @@ public interface RegSearchService {
     public Optional<NetworkParticipant> getNP(Integer id);
 
     public List<NetworkParticipant> getNPByDomain(Integer domainId);
+
+    public List<NetworkParticipant> getNPByDomainCity(Integer domainId, String city);
 }

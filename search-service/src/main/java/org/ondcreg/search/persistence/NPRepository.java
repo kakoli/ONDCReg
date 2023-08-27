@@ -11,9 +11,10 @@ import java.util.List;
 public interface NPRepository extends JpaRepository<NetworkParticipant, Integer> {
 
     @Query("SELECT n FROM NetworkParticipant n JOIN n.domain d WHERE d.id = ?1")
-    /*@Query("SELECT new com.example.model.NetworkParticipantData(e.firstname, e.lastname, d.name, a.city, a.state, a.zip) " +
-            "FROM Department d JOIN d.emps e JOIN e.address a WHERE d.name = ?1")
-    public List<EmpData> getEmpsFromDept(String name);*/
     public List<NetworkParticipant> findNPByDomain(Integer domainId);
+
+    @Query("SELECT n FROM NetworkParticipant n JOIN n.domain d WHERE d.id = ?1 and " +
+            "n.cityCode = ?2")
+    public List<NetworkParticipant> filterNP_DomainCity(Integer domainId, String city);
 
 }

@@ -19,17 +19,22 @@ public class RegSearchServiceImpl implements RegSearchService {
     public Optional<NetworkParticipant> getNP(Integer id){
         Optional<NetworkParticipant> np = null;
         np = npRepo.findById(id);
-        if(np.isPresent()) {
+        /*if(np.isPresent()) {
             if(np.get().getMsn() == true){
-
             }
-        }
+        }*/
         return np;
     }
 
     public List<NetworkParticipant> getNPByDomain(Integer domainId){
         List<NetworkParticipant> npList = null;
         npList = npRepo.findNPByDomain(domainId);
+        return npList;
+    }
+
+    public List<NetworkParticipant> getNPByDomainCity(Integer domainId, String city){
+        List<NetworkParticipant> npList = null;
+        npList = npRepo.filterNP_DomainCity(domainId, city);
         return npList;
     }
 

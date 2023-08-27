@@ -32,27 +32,7 @@ public class RegSearchController {
         return "Hello World";
     }
 
-    @GetMapping("/product/{prodId}") // To be used in test_db
-    public ResponseEntity<Product> getProduct(@PathVariable("prodId") Integer prodId) {
-        log.info("Start getProduct : "+ prodId);
-        Product getResponse = null;
-        ResponseEntity<Product> ret = null;
-        Optional<Product> prod = null;
-
-        if(prodId != null ) {
-            prod = prodService.getProduct(prodId);
-            if (prod.isPresent()) {
-                getResponse = prod.get();
-                log.info("Product info " +getResponse.getProdName());
-                ret = new ResponseEntity<>(getResponse, HttpStatus.OK);
-            }
-            else {
-                ret = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-            }
-        }
-        return ret;
-    }
-
+    // Getting specific NP details including SoR
     @GetMapping("/np/{npId}")   // To be used in ondc_registry
     public ResponseEntity<NetworkParticipant> getNP(@PathVariable("npId") Integer npId) {
         log.info("Start getNP : " + npId);
@@ -89,14 +69,37 @@ public class RegSearchController {
         return response;
     }
 
+    // Getting all the NPs for a specific domain, city
+    @GetMapping(path="/np", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NetworkParticipant>> getNPByDomainCity(
+                            @RequestParam(value="domain", required=true) Integer  domainId,
+                            @RequestParam(value="city", required = true) String city) {
+        log.info("Start getNPByDomainCity : " + domainId);
+        long ts = System.currentTimeMillis();
+        ResponseEntity<List<NetworkParticipant>> response = null;
+        List<NetworkParticipant> npList = null;
+
+        npList = searchService.getNPByDomainCity(domainId, city);
+        if(npList != null ) {
+            log.info("NP info " +npList.size());
+            response = new ResponseEntity<>(npList, HttpStatus.OK);
+        }
+        else {
+            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        log.info("Time taken " +(System.currentTimeMillis() - ts));
+        return response;
+    }
+
+    //Getting NP count for a domain
     @GetMapping(path="/np/cnt", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> getNPCntByDomain(@RequestParam(value="domain",
-                                                            required=true) Integer  domainId) {
-        log.info("Start getNPByDomain : " + domainId);
+    public ResponseEntity<Integer> getNPCntByDomainCity(@RequestParam(value="domain", required=true) Integer  domainId,
+                                                    @RequestParam(value="city", required = true) String city) {
+        log.info("Start getNPCntByDomainCity : " + domainId);
         ResponseEntity<Integer> response = null;
         long ts = System.currentTimeMillis();
 
-        List<NetworkParticipant> npList = searchService.getNPByDomain(domainId);
+        List<NetworkParticipant> npList = searchService.getNPByDomainCity(domainId, city);
         if(npList != null ) {
             log.info("NP info " +npList.size());
             response = new ResponseEntity<>(npList.size(), HttpStatus.OK);
@@ -108,7 +111,45 @@ public class RegSearchController {
         return response;
     }
 
-    @GetMapping(path="/np", consumes = MediaType.APPLICATION_JSON_VALUE)
+    //Getting specific NP details along with SoR
+   /* @GetMapping(path="/npsor/{npId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<NetworkParticipant> getNPWithSoR(@PathVariable("npId") Integer npId) {
+        log.info("Start getNPWithSoR : " + npId);
+        Optional<NetworkParticipant> np;
+        ResponseEntity<NetworkParticipant> response = null;
+        long ts = System.currentTimeMillis();
+
+        if(npId != null ) {
+            np = searchService.getNPWithSoR(npId);
+            if (np.isPresent()) {
+                //getResponse = EmpGetResponse.builder().emp(emp.get()).build();
+                log.info("NP info " +np.get().getType());
+                response = new ResponseEntity<>(np.get(), HttpStatus.OK);
+            }
+            else {
+                *//*Error err = Error.builder()
+                        .errorCode(HttpStatus.NOT_FOUND.value())
+                        .errorDesc("Employee does not exist.").build();
+                getResponse = EmpGetResponse.builder()
+                        .errList(Collections.singletonList(err)).build();*//*
+                response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+        }
+        else {
+            log.error("NP id is mandatory");
+            *//*Error err = Error.builder()
+                    .errorCode(HttpStatus.BAD_REQUEST.value())
+                    .errorDesc("Employee id needed in request.").build();
+            getResponse = EmpGetResponse.builder()
+                    .errList(Collections.singletonList(err)).build();*//*
+            response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        log.info("Time taken " +(System.currentTimeMillis() - ts));
+        return response;
+    }*/
+
+    // Getting all the NPs for a specific domain
+    /*@GetMapping(path="/np", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NetworkParticipant>> getNPByDomain(@RequestParam(value="domain",
             required=true) Integer  domainId) {
         log.info("Start getNPByDomain : " + domainId);
@@ -126,5 +167,5 @@ public class RegSearchController {
         }
         log.info("Time taken " +(System.currentTimeMillis() - ts));
         return response;
-    }
+    }*/
 }

@@ -1,6 +1,7 @@
 package org.ondcreg.search.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -70,7 +71,8 @@ public class SellerOnRecord {
     @Column(name = "valid_until")
     private LocalDateTime validUntil;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "network_participant_id")
-    private NetworkParticipant networkParticipant;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private NetworkParticipant networkParticipant;*/
 }
